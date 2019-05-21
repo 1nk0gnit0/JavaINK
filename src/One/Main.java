@@ -3,6 +3,7 @@ package One;
 public class Main {
     public static void main(String[] args) {
 
+        Course c = new Course(distRun, distJump);
         Team team = new Team("Humans");
         Person[] arrPerson = new Person[4];
 
@@ -16,6 +17,8 @@ public class Main {
         for (Person person : arrPerson){
             person.Info();
         }
+
+        c.Info();
     }
 
 }

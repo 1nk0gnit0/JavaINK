@@ -14,6 +14,6 @@ public class Person extends Team {
     }
 
     public void Info(){
-        System.out.println(this.name + " пробегает " + toRun + "м., перепрыгивает препятсвия высотой " + toJump + "м.");
+        System.out.println(this.name + " пробегает " + this.toRun + "м., перепрыгивает препятсвия высотой " + this.toJump + "м.");
     }
 }
