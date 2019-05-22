@@ -1,20 +1,33 @@
 package One;
 
-public class Course {
-    private int[] distRun = new int[3];
-    private double[] distJump  = new double[3];
-
+public class Course extends Team{
+    private int[] disincentive;
 
     public Course() {
-        distRun[0] = (int) ((Math.random()*(1250-500))+500);
+        this.disincentive = new int[]{0, 1, 0, 1, 0, 1, 0};
+    }
+
+    public void Info() {
+        System.out.print("Стар -> ");
+        for (int i = 0; i < disincentive.length; i++) {
+            if (disincentive[i] == 0) System.out.print("Дистанция 25 м.");
+            else System.out.print(" -> Препятствие -> ");
+        }
+        System.out.println(" -> Финиш");
+        System.out.println();
+    }
+
+    public void doIt(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            int stamina = arr[i];
+            for (int j = 0; j < disincentive.length; j++) {
+                    if (disincentive[j] == 0) stamina = stamina - 20;
+                    else stamina = stamina - 10;
+                    arr[i] = stamina;
+                    if (stamina <= 0) break;
+                }
+            }
+        }
     }
 
 
-
-
-    public void Info(){
-        System.out.println("Дистанция: " + this.distRun + " м. Высота препятсвия: " + distJump + " м.");
-    }
-}
-//this.distRun = (int) ((Math.random()*(1250-500))+500);
-       // this.distJump = Math.random()*(2-0.5)*0.5;
