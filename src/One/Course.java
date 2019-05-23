@@ -8,23 +8,23 @@ public class Course extends Team{
     }
 
     public void Info() {
-        System.out.print("Стар -> ");
+        System.out.print("С Т А Р Т -> ");
         for (int i = 0; i < disincentive.length; i++) {
+            if (i != 0) System.out.print(" -> ");
             if (disincentive[i] == 0) System.out.print("Дистанция 25 м.");
-            else System.out.print(" -> Препятствие -> ");
+            else System.out.print("Препятствие");
         }
-        System.out.println(" -> Финиш");
+        System.out.println(" -> Ф И Н И Ш");
         System.out.println();
     }
 
     public void doIt(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            int stamina = arr[i];
             for (int j = 0; j < disincentive.length; j++) {
-                    if (disincentive[j] == 0) stamina = stamina - 20;
-                    else stamina = stamina - 10;
-                    arr[i] = stamina;
-                    if (stamina <= 0) break;
+                    if (disincentive[j] == 0) arr[i] = arr[i] - 20;
+                    else arr[i] = arr[i] - 10;
+                    arr[i] = arr[i];
+                    if (arr[i] <= 0) break;
                 }
             }
         }

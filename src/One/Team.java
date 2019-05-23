@@ -6,7 +6,7 @@ public class Team {
 
     public Team() {
         this.nameTeam = "Team";
-        this.person = new int[]{90, 100, 110, 1020};
+        this.person = new int[]{90, 120, 110, 150};
     }
 
     public void Info(){
