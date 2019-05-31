@@ -14,8 +14,9 @@ public class UniqList {
 
         Map<String, Integer> map = new HashMap<>();
 
+
         for (String s : arr) {
-           map.merge(s, 1, (a, b)->a + b);
+           map.put(s, map.getOrDefault(s, 0)+1);
         }
 
         System.out.println(map);
