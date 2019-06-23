@@ -49,7 +49,6 @@ public class ClientHandler {
         }
     }
 
-    // /auth login1 password1
     private void autorization() throws IOException {
         while (true) {
             String str = in.readUTF();
@@ -57,7 +56,7 @@ public class ClientHandler {
                 String[] tokens = str.split(" ");
                 String nick = authService.getNick(tokens[1], tokens[2]);
                 if (nick != null) {
-                    sendMsg("/authOK");
+                    sendMsg(nick + "/authOK");
                     server.subscribe(this);
                     break;
                 } else {
