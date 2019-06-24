@@ -12,6 +12,11 @@ public class ClientHandler {
     private AuthService authService;
     private DataOutputStream out;
     private DataInputStream in;
+    private String nick;
+
+    public String getNick() {
+        return nick;
+    }
 
     public ClientHandler(Server server, Socket socket){
         try {
@@ -41,8 +46,19 @@ public class ClientHandler {
                 if (str.equalsIgnoreCase("/end")) {
                     sendMsg("/serverclosed");
                     break;
+                }else if (str.startsWith("/w")){
+                    String[] token = str.split(" ");
+                    String string = " ";
+                    for (String message : token) {
+                        if (message == token[1]) string = "<" + message + "> ";
+                        else string += " " + message;
+                    }
+                    System.out.println(nick + ": " + string);
+                    sendMsg(nick + ": " + string);
+                    server.prvMsg(token[1],string);
+                }else {
+                    server.broadcast(nick + ": " + str);
                 }
-                server.broadcast(str);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -54,9 +70,10 @@ public class ClientHandler {
             String str = in.readUTF();
             if (str.startsWith("/auth")) {
                 String[] tokens = str.split(" ");
-                String nick = authService.getNick(tokens[1], tokens[2]);
-                if (nick != null) {
-                    sendMsg(nick + "/authOK");
+                String newNick = authService.getNick(tokens[1], tokens[2]);
+                if (newNick != null) {
+                    nick = newNick;
+                    sendMsg("/authOK");
                     server.subscribe(this);
                     break;
                 } else {

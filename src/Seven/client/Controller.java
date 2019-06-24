@@ -32,11 +32,11 @@ public class Controller {
     final String ADDRESS = "localhost";
     final int PORT = 8182;
 
-    private boolean isAAutorized;
+    private boolean isAutorized;
 
-    private void setAutorized(boolean isAAutorized) {
-        this.isAAutorized = isAAutorized;
-        if (!isAAutorized) {
+    private void setAutorized(boolean isAutorized) {
+        this.isAutorized = isAutorized;
+        if (!isAutorized) {
             upperPanel.setVisible(true);
             upperPanel.setManaged(true);
             bottomPanel.setVisible(false);
