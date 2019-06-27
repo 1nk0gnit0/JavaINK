@@ -4,7 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -24,6 +27,8 @@ public class Controller {
     TextField loginField;
     @FXML
     PasswordField passwordField;
+    @FXML
+    ListView<String> clientList;
 
     Socket socket;
     DataInputStream in;
@@ -41,11 +46,15 @@ public class Controller {
             upperPanel.setManaged(true);
             bottomPanel.setVisible(false);
             bottomPanel.setManaged(true);
+            clientList.setVisible(false);
+            clientList.setManaged(false);
         } else {
             upperPanel.setVisible(false);
             upperPanel.setManaged(false);
             bottomPanel.setVisible(true);
             bottomPanel.setManaged(true);
+            clientList.setVisible(true);
+            clientList.setManaged(true);
         }
     }
 
@@ -84,6 +93,15 @@ public class Controller {
             String str = in.readUTF();
             if (str.equalsIgnoreCase("/serverclosed")) {
                 break;
+            }
+            if (str.startsWith("/clientlist")) {
+                String[] tokens = str.split(" ");
+                Platform.runLater(() -> {
+                    clientList.getItems().clear();
+                    for (int i = 1; i < tokens.length; i++) {
+                        clientList.getItems().add(tokens[i]);
+                    }
+                });
             }
             chatArea.appendText(str + "\n");
         }

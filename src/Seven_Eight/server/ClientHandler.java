@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientHandler {
 
@@ -13,6 +15,8 @@ public class ClientHandler {
     private DataOutputStream out;
     private DataInputStream in;
     private String nick;
+    private List<String> blackList;
+    private boolean LogIn = false;
 
     public String getNick() {
         return nick;
@@ -25,6 +29,7 @@ public class ClientHandler {
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
             this.authService = new AuthServiceImpl();
+            this.blackList = new CopyOnWriteArrayList<>();
             new Thread(() ->{
                 try {
                     autorization();
@@ -35,6 +40,9 @@ public class ClientHandler {
                     close();
                 }
             }).start();
+            if (!LogIn){
+                Thread.sleep(120*1000);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +54,7 @@ public class ClientHandler {
                 if (str.equalsIgnoreCase("/end")) {
                     sendMsg("/serverclosed");
                     break;
-                }else if (str.startsWith("/w")){
+                }else if (str.startsWith("/w")) {
                     String[] token = str.split(" ");
                     String string = " ";
                     for (String message : token) {
@@ -55,9 +63,14 @@ public class ClientHandler {
                     }
                     System.out.println(nick + ": " + string);
                     sendMsg(nick + ": " + string);
-                    server.prvMsg(token[1],string);
+                    server.prvMsg(token[1], string);
+                }else if((str.startsWith("/blacklist "))){
+                    String[] tokens = str.split(" ");
+                    blackList.add(tokens[1]);
+                    sendMsg(
+                            "Вы добавили пользователя с ником " + tokens[1] + " в черный список!");
                 }else {
-                    server.broadcast(nick + ": " + str);
+                    server.broadcast(this,nick + ": " + str);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -79,6 +92,7 @@ public class ClientHandler {
                 } else {
                     sendMsg("Неверный логин/пароль");
                 }
+                LogIn = true;
             }
         }
     }
@@ -100,5 +114,8 @@ public class ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    boolean checkBlackList(String nick) {
+        return blackList.contains(nick);
     }
 }

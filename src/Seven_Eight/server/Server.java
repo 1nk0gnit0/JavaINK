@@ -32,7 +32,6 @@ class Server {
                 System.out.println("Клиент подключился!");
 
                 ClientHandler clientHandler = new ClientHandler(this, socket);
-                System.out.println(clientHandler.getNick());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,9 +46,11 @@ class Server {
         }
     }
 
-    void broadcast(String message) {
+    void broadcast(ClientHandler from, String message) {
         for (ClientHandler clientHandler : peers) {
-            clientHandler.sendMsg(message);
+            if (!clientHandler.checkBlackList(from.getNick())) {
+                clientHandler.sendMsg(message);
+            }
         }
     }
 
@@ -63,9 +64,23 @@ class Server {
 
     void subscribe(ClientHandler clientHandler) {
         peers.add(clientHandler);
+        broadcastClientList();
     }
 
     void unsubscribe(ClientHandler clientHandler) {
         peers.remove(clientHandler);
     }
+
+    private void broadcastClientList() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("/clientlist ");
+        for (ClientHandler clientHandler : peers) {
+            sb.append(clientHandler.getNick() + " ");
+        }
+        String out = sb.toString();
+        for (ClientHandler clientHandler : peers) {
+            clientHandler.sendMsg(out);
+        }
+    }
+
 }
