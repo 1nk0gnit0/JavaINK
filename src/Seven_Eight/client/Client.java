@@ -1,4 +1,4 @@
-package Seven.client;
+package Seven_Eight.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,4 +1,4 @@
-package Seven.server;
+package Seven_Eight.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;

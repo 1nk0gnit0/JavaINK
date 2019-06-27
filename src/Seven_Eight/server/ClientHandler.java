@@ -1,4 +1,4 @@
-package Seven.server;
+package Seven_Eight.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
